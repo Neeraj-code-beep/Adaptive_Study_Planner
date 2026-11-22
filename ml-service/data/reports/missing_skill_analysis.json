@@ -1,0 +1,12 @@
+{
+  "total_raw_rows": 525534,
+  "missing_skill_name_count": 78690,
+  "missing_skill_name_percentage": 14.97,
+  "missing_skill_id_count": 66326,
+  "missing_skill_id_percentage": 12.62,
+  "orphan_skill_ids_count": 12,
+  "orphan_skill_ids_rows": 12364,
+  "both_missing_rows": 66326,
+  "policy": "Exclude interactions lacking verified skill names. Orphan skill IDs cannot be mapped to named skills and are excluded to prevent ungrounded knowledge components.",
+  "retained_skill_tagged_rows": 446844
+}

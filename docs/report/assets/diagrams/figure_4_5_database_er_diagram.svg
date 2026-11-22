@@ -1,0 +1,203 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" width="1000" height="640" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <filter id="shadow5" x="-2%" y="-3%" width="104%" height="108%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="1000" height="640" fill="#f8fafc" rx="8"/>
+  <rect x="1" y="1" width="998" height="638" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="8"/>
+
+  <!-- Title Banner -->
+  <text x="500" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Relational Database Entity-Relationship Diagram (Prisma Schema)</text>
+  <text x="500" y="44" text-anchor="middle" font-size="10.5" fill="#64748b">11 Normalized Models: User Identity, Topic Curriculum DAG, Content Items, Student Behavioral Logs &amp; BKT Mastery</text>
+
+  <!-- 1. USER TABLE -->
+  <g transform="translate(30, 65)">
+    <rect width="180" height="150" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" rx="4" filter="url(#shadow5)"/>
+    <rect width="180" height="24" fill="#1e293b" rx="4 4 0 0"/>
+    <text x="90" y="16" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#ffffff">users (User)</text>
+    <text x="8" y="38" font-size="8.5" font-weight="bold" fill="#0f172a">PK id: String (uuid)</text>
+    <text x="8" y="52" font-size="8.5" fill="#334155">name: String</text>
+    <text x="8" y="66" font-size="8.5" fill="#334155">email: String [unique]</text>
+    <text x="8" y="80" font-size="8.5" fill="#334155">role: UserRole (STUDENT)</text>
+    <text x="8" y="94" font-size="8.5" fill="#334155">isActive: Boolean</text>
+    <text x="8" y="108" font-size="8.5" fill="#64748b">createdAt: DateTime</text>
+    <text x="8" y="122" font-size="8.5" fill="#64748b">updatedAt: DateTime</text>
+  </g>
+
+  <!-- 2. STUDENT PROFILE (1:1 with User) -->
+  <g transform="translate(30, 235)">
+    <rect width="180" height="110" fill="#ffffff" stroke="#475569" stroke-width="1.2" rx="4" filter="url(#shadow5)"/>
+    <rect width="180" height="22" fill="#475569" rx="4 4 0 0"/>
+    <text x="90" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">student_profiles</text>
+    <text x="8" y="36" font-size="8.5" font-weight="bold" fill="#0f172a">PK id: String (uuid)</text>
+    <text x="8" y="50" font-size="8.5" font-weight="bold" fill="#2563eb">FK userId: String [unique]</text>
+    <text x="8" y="64" font-size="8.5" fill="#334155">academicLevel: String?</text>
+    <text x="8" y="78" font-size="8.5" fill="#334155">targetExam: String?</text>
+    <text x="8" y="92" font-size="8.5" fill="#334155">preferredDailyMinutes: Int</text>
+  </g>
+
+  <!-- 3. SUBJECT TABLE -->
+  <g transform="translate(260, 65)">
+    <rect width="180" height="110" fill="#ffffff" stroke="#0f766e" stroke-width="1.2" rx="4" filter="url(#shadow5)"/>
+    <rect width="180" height="22" fill="#0f766e" rx="4 4 0 0"/>
+    <text x="90" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">subjects (Subject)</text>
+    <text x="8" y="36" font-size="8.5" font-weight="bold" fill="#0f172a">PK id: String (uuid)</text>
+    <text x="8" y="50" font-size="8.5" fill="#334155">code: String [unique]</text>
+    <text x="8" y="64" font-size="8.5" fill="#334155">name: String</text>
+    <text x="8" y="78" font-size="8.5" fill="#334155">description: Text?</text>
+    <text x="8" y="92" font-size="8.5" fill="#64748b">metadata: Json?</text>
+  </g>
+
+  <!-- 4. TOPIC TABLE -->
+  <g transform="translate(260, 205)">
+    <rect width="190" height="170" fill="#ffffff" stroke="#0f766e" stroke-width="1.5" rx="4" filter="url(#shadow5)"/>
+    <rect width="190" height="24" fill="#0f766e" rx="4 4 0 0"/>
+    <text x="95" y="16" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#ffffff">topics (Topic)</text>
+    <text x="8" y="38" font-size="8.5" font-weight="bold" fill="#0f172a">PK id: String (uuid)</text>
+    <text x="8" y="52" font-size="8.5" font-weight="bold" fill="#2563eb">FK subjectId: String</text>
+    <text x="8" y="66" font-size="8.5" fill="#334155">slug: String [unique]</text>
+    <text x="8" y="80" font-size="8.5" fill="#334155">name: String</text>
+    <text x="8" y="94" font-size="8.5" fill="#334155">difficulty: DifficultyLevel</text>
+    <text x="8" y="108" font-size="8.5" fill="#334155">displayOrder: Int</text>
+    <text x="8" y="122" font-size="8.5" fill="#334155">estimatedDuration: Int?</text>
+    <text x="8" y="136" font-size="8.5" fill="#334155">isActive: Boolean</text>
+  </g>
+
+  <!-- 5. TOPIC PREREQUISITE (DAG Relation) -->
+  <g transform="translate(260, 405)">
+    <rect width="200" height="110" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5" rx="4" filter="url(#shadow5)"/>
+    <rect width="200" height="22" fill="#7c3aed" rx="4 4 0 0"/>
+    <text x="100" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">topic_prerequisites (DAG)</text>
+    <text x="8" y="36" font-size="8.5" font-weight="bold" fill="#0f172a">PK id: String (uuid)</text>
+    <text x="8" y="50" font-size="8.5" font-weight="bold" fill="#2563eb">FK topicId: String (Target)</text>
+    <text x="8" y="64" font-size="8.5" font-weight="bold" fill="#2563eb">FK prerequisiteTopicId: String</text>
+    <text x="8" y="78" font-size="8.5" fill="#334155">isStrict: Boolean (true)</text>
+    <text x="8" y="92" font-size="8.5" fill="#334155">minimumMastery: Float (0.85)</text>
+  </g>
+
+  <!-- 6. QUESTION TABLE -->
+  <g transform="translate(500, 65)">
+    <rect width="190" height="160" fill="#ffffff" stroke="#334155" stroke-width="1.2" rx="4" filter="url(#shadow5)"/>
+    <rect width="190" height="22" fill="#334155" rx="4 4 0 0"/>
+    <text x="95" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">questions (Question)</text>
+    <text x="8" y="36" font-size="8.5" font-weight="bold" fill="#0f172a">PK id: String (uuid)</text>
+    <text x="8" y="50" font-size="8.5" font-weight="bold" fill="#2563eb">FK topicId: String</text>
+    <text x="8" y="64" font-size="8.5" fill="#334155">questionType: QuestionType</text>
+    <text x="8" y="78" font-size="8.5" fill="#334155">promptText: Text</text>
+    <text x="8" y="92" font-size="8.5" fill="#334155">explanationText: Text?</text>
+    <text x="8" y="106" font-size="8.5" fill="#334155">difficulty: DifficultyLevel</text>
+    <text x="8" y="120" font-size="8.5" fill="#334155">pointValue: Int (1)</text>
+  </g>
+
+  <!-- 7. QUESTION OPTION -->
+  <g transform="translate(500, 245)">
+    <rect width="190" height="110" fill="#ffffff" stroke="#64748b" stroke-width="1" rx="4" filter="url(#shadow5)"/>
+    <rect width="190" height="22" fill="#64748b" rx="4 4 0 0"/>
+    <text x="95" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">question_options</text>
+    <text x="8" y="36" font-size="8.5" font-weight="bold" fill="#0f172a">PK id: String (uuid)</text>
+    <text x="8" y="50" font-size="8.5" font-weight="bold" fill="#2563eb">FK questionId: String</text>
+    <text x="8" y="64" font-size="8.5" fill="#334155">optionText: Text</text>
+    <text x="8" y="78" font-size="8.5" fill="#166534">isCorrect: Boolean</text>
+    <text x="8" y="92" font-size="8.5" fill="#334155">displayOrder: Int</text>
+  </g>
+
+  <!-- 8. STUDENT INTERACTIONS -->
+  <g transform="translate(500, 385)">
+    <rect width="210" height="190" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" rx="4" filter="url(#shadow5)"/>
+    <rect width="210" height="24" fill="#2563eb" rx="4 4 0 0"/>
+    <text x="105" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">student_interactions</text>
+    <text x="8" y="38" font-size="8.5" font-weight="bold" fill="#0f172a">PK id: String (uuid)</text>
+    <text x="8" y="52" font-size="8.5" font-weight="bold" fill="#2563eb">FK studentId: String</text>
+    <text x="8" y="66" font-size="8.5" font-weight="bold" fill="#2563eb">FK topicId: String</text>
+    <text x="8" y="80" font-size="8.5" font-weight="bold" fill="#2563eb">FK questionId: String</text>
+    <text x="8" y="94" font-size="8.5" fill="#166534">isCorrect: Boolean</text>
+    <text x="8" y="108" font-size="8.5" fill="#334155">responseTimeMs: Int?</text>
+    <text x="8" y="122" font-size="8.5" fill="#334155">hintCount: Int (0)</text>
+    <text x="8" y="136" font-size="8.5" fill="#334155">attemptNumber: Int (1)</text>
+    <text x="8" y="150" font-size="8.5" fill="#64748b">createdAt: DateTime</text>
+  </g>
+
+  <!-- 9. STUDENT TOPIC MASTERY -->
+  <g transform="translate(740, 65)">
+    <rect width="230" height="160" fill="#ffffff" stroke="#16a34a" stroke-width="1.5" rx="4" filter="url(#shadow5)"/>
+    <rect width="230" height="24" fill="#16a34a" rx="4 4 0 0"/>
+    <text x="115" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">student_topic_masteries (BKT)</text>
+    <text x="8" y="38" font-size="8.5" font-weight="bold" fill="#0f172a">PK id: String (uuid)</text>
+    <text x="8" y="52" font-size="8.5" font-weight="bold" fill="#2563eb">FK studentId: String</text>
+    <text x="8" y="66" font-size="8.5" font-weight="bold" fill="#2563eb">FK topicId: String</text>
+    <text x="8" y="80" font-size="8.5" font-weight="bold" fill="#16a34a">masteryProbability: Float [0,1]</text>
+    <text x="8" y="94" font-size="8.5" fill="#334155">predictedCorrectness: Float?</text>
+    <text x="8" y="108" font-size="8.5" fill="#334155">modelVersion: String (bkt_v1)</text>
+    <text x="8" y="122" font-size="8.5" fill="#334155">totalInteractions: Int</text>
+    <text x="8" y="136" font-size="8.5" fill="#64748b">@@unique([studentId, topicId])</text>
+  </g>
+
+  <!-- 10. MASTERY HISTORY -->
+  <g transform="translate(740, 245)">
+    <rect width="230" height="150" fill="#ffffff" stroke="#16a34a" stroke-width="1.2" rx="4" filter="url(#shadow5)"/>
+    <rect width="230" height="22" fill="#15803d" rx="4 4 0 0"/>
+    <text x="115" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">mastery_histories (Audit Trail)</text>
+    <text x="8" y="36" font-size="8.5" font-weight="bold" fill="#0f172a">PK id: String (uuid)</text>
+    <text x="8" y="50" font-size="8.5" font-weight="bold" fill="#2563eb">FK studentId, topicId</text>
+    <text x="8" y="64" font-size="8.5" font-weight="bold" fill="#2563eb">FK interactionId: String?</text>
+    <text x="8" y="78" font-size="8.5" fill="#334155">masteryBefore: Float</text>
+    <text x="8" y="92" font-size="8.5" fill="#334155">masteryAfter: Float</text>
+    <text x="8" y="106" font-size="8.5" fill="#334155">predictedCorrectness: Float</text>
+    <text x="8" y="120" font-size="8.5" fill="#64748b">createdAt: DateTime</text>
+  </g>
+
+  <!-- 11. STUDY RECOMMENDATIONS -->
+  <g transform="translate(740, 415)">
+    <rect width="230" height="160" fill="#ffffff" stroke="#b45309" stroke-width="1.2" rx="4" filter="url(#shadow5)"/>
+    <rect width="230" height="22" fill="#b45309" rx="4 4 0 0"/>
+    <text x="115" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">study_recommendations [Proposed]</text>
+    <text x="8" y="36" font-size="8.5" font-weight="bold" fill="#0f172a">PK id: String (uuid)</text>
+    <text x="8" y="50" font-size="8.5" font-weight="bold" fill="#2563eb">FK studentId, topicId</text>
+    <text x="8" y="64" font-size="8.5" fill="#334155">reason: RecommendationReason</text>
+    <text x="8" y="78" font-size="8.5" fill="#334155">type: RecommendationType</text>
+    <text x="8" y="92" font-size="8.5" fill="#334155">priority: Int (1 to 5)</text>
+    <text x="8" y="106" font-size="8.5" fill="#334155">status: RecommendationStatus</text>
+    <text x="8" y="120" font-size="8.5" fill="#334155">currentMastery: Float?</text>
+  </g>
+
+  <!-- RELATIONSHIP CONNECTORS -->
+  <!-- User to StudentProfile (1:1) -->
+  <path d="M 120 215 L 120 235" stroke="#334155" stroke-width="1.5"/>
+  <text x="130" y="228" font-size="8" fill="#475569">1:1</text>
+
+  <!-- Subject to Topic (1:N) -->
+  <path d="M 350 175 L 350 205" stroke="#334155" stroke-width="1.5"/>
+  <text x="358" y="195" font-size="8" fill="#475569">1:N</text>
+
+  <!-- Topic to TopicPrerequisite (Self DAG N:M) -->
+  <path d="M 350 375 L 350 405" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="358" y="395" font-size="8" fill="#7c3aed">DAG</text>
+
+  <!-- Topic to Question (1:N) -->
+  <path d="M 450 250 L 500 150" stroke="#334155" stroke-width="1.5"/>
+  <text x="465" y="195" font-size="8" fill="#475569">1:N</text>
+
+  <!-- Question to QuestionOption (1:N) -->
+  <path d="M 595 225 L 595 245" stroke="#334155" stroke-width="1.5"/>
+  <text x="602" y="238" font-size="8" fill="#475569">1:N</text>
+
+  <!-- Question to StudentInteraction (1:N) -->
+  <path d="M 595 355 L 595 385" stroke="#334155" stroke-width="1.5"/>
+  <text x="602" y="372" font-size="8" fill="#475569">1:N</text>
+
+  <!-- User & Topic to StudentTopicMastery (N:M unique) -->
+  <path d="M 450 220 L 740 140" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="600" y="170" font-size="8" fill="#16a34a">1:1 (per topic)</text>
+
+  <!-- Interaction to MasteryHistory (1:N) -->
+  <path d="M 710 440 L 740 330" stroke="#334155" stroke-width="1.5"/>
+  <text x="715" y="380" font-size="8" fill="#475569">1:1</text>
+
+  <!-- User/Topic to StudyRecommendation -->
+  <path d="M 710 470 L 740 470" stroke="#b45309" stroke-width="1.5"/>
+  <text x="715" y="465" font-size="8" fill="#b45309">1:N</text>
+
+  <text x="500" y="615" text-anchor="middle" font-size="9.5" fill="#64748b">Foreign Keys Enforced with Cascade Deletes on Core Parent Entities • PostgreSQL Index Optimization on Chronological Composite Keys</text>
+</svg>

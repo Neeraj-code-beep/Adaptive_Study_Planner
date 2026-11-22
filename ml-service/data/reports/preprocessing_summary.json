@@ -1,0 +1,109 @@
+{
+  "pipeline_version": "1.0.0",
+  "transformation_metrics": {
+    "raw_input_rows": 525534,
+    "dropped_missing_identifiers": 0,
+    "dropped_missing_skill": 78690,
+    "dropped_invalid_correctness": 0,
+    "dropped_event_duplicates": 121207,
+    "dropped_non_first_attempt": 0,
+    "dropped_threshold_filters": 1188,
+    "final_cleaned_rows": 324449,
+    "retained_percentage": 61.74,
+    "filter_first_attempt_applied": false,
+    "min_student_interactions_applied": 5,
+    "min_skill_interactions_applied": 30
+  },
+  "unseen_student_protocol": {
+    "protocol": "Protocol A: Unseen-Student Generalization",
+    "description": "Evaluates model ability to generalize to completely new students. No student appears across multiple splits.",
+    "random_seed": 42,
+    "configured_ratios": [
+      0.7,
+      0.15,
+      0.15
+    ],
+    "total_students": 3676,
+    "total_interactions": 324449,
+    "student_counts": {
+      "train": 2573,
+      "validation": 551,
+      "test": 552
+    },
+    "interaction_counts": {
+      "train": 227011,
+      "validation": 45297,
+      "test": 52141
+    },
+    "correctness_distribution": {
+      "train": {
+        "0": 77155,
+        "1": 149856
+      },
+      "validation": {
+        "0": 15852,
+        "1": 29445
+      },
+      "test": {
+        "0": 17694,
+        "1": 34447
+      }
+    },
+    "skill_coverage": {
+      "total_skills": 104,
+      "train_skills": 104,
+      "val_skills": 101,
+      "test_skills": 101,
+      "skills_missing_from_test": 3
+    },
+    "verification": {
+      "zero_student_overlap": true,
+      "all_interactions_accounted": true
+    },
+    "files": {
+      "train": "N:\\adaptive-study-planner\\ml-service\\data\\splits\\unseen_students\\train.csv",
+      "validation": "N:\\adaptive-study-planner\\ml-service\\data\\splits\\unseen_students\\validation.csv",
+      "test": "N:\\adaptive-study-planner\\ml-service\\data\\splits\\unseen_students\\test.csv"
+    }
+  },
+  "known_student_future_protocol": {
+    "protocol": "Protocol B: Known-Student Future Prediction",
+    "description": "Evaluates model ability to forecast future responses of known students given their past practice history.",
+    "history_ratio": 0.8,
+    "eligible_students": 3676,
+    "ineligible_students": 0,
+    "total_interactions": 324449,
+    "history_interactions": 258128,
+    "future_test_interactions": 66321,
+    "correctness_distribution": {
+      "history": {
+        "0": 87494,
+        "1": 170634
+      },
+      "future_test": {
+        "0": 23207,
+        "1": 43114
+      }
+    },
+    "verification": {
+      "zero_temporal_leakage": true,
+      "all_interactions_accounted": true
+    },
+    "files": {
+      "history": "N:\\adaptive-study-planner\\ml-service\\data\\splits\\known_students_future\\history.csv",
+      "future_test": "N:\\adaptive-study-planner\\ml-service\\data\\splits\\known_students_future\\future_test.csv"
+    }
+  },
+  "configuration": {
+    "random_seed": 42,
+    "filter_first_attempt": false,
+    "min_student_interactions": 5,
+    "min_skill_interactions": 30,
+    "unseen_student_ratios": [
+      0.7,
+      0.15,
+      0.15
+    ],
+    "known_student_history_ratio": 0.8
+  }
+}

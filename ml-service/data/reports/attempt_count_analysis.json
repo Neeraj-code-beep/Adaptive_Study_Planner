@@ -1,0 +1,27 @@
+{
+  "finding": "In ASSISTments, the 'correct' column measures first-attempt correctness (1 if correct on first try without hints, 0 otherwise). The 'attempt_count' column measures the cumulative attempts required to solve the item across the tutoring session.",
+  "critical_bias_warning": "Filtering by attempt_count == 1 discards 89,583 valid first-attempt failures (where students required subsequent attempts), introducing artificial survival bias and distorting accuracy from 69.5% to 85.6%.",
+  "comparison": {
+    "dataset_a_all_valid_skills": {
+      "description": "All valid skill-tagged interactions. Target 'correct' accurately reflects first-response success/failure.",
+      "total_rows": 325637,
+      "unique_students": 4151,
+      "unique_skills": 110,
+      "correct_count": 226462,
+      "incorrect_count": 99175,
+      "correct_percentage": 69.54,
+      "recommended": true
+    },
+    "dataset_b_first_attempt_only": {
+      "description": "Restricted to attempt_count == 1 only. Suffers from severe success survivorship bias.",
+      "total_rows": 252994,
+      "unique_students": 4080,
+      "unique_skills": 110,
+      "correct_count": 216315,
+      "incorrect_count": 36679,
+      "correct_percentage": 85.5,
+      "recommended": false
+    }
+  },
+  "policy_decision": "Use Dataset A by default. Keep filter_first_attempt configurable in PreprocessingConfig."
+}

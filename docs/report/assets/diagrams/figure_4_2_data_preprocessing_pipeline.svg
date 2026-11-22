@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 480" width="950" height="480" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <filter id="shadow2" x="-3%" y="-5%" width="106%" height="112%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <rect width="950" height="480" fill="#f8fafc" rx="8"/>
+  <rect x="1" y="1" width="948" height="478" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="8"/>
+
+  <!-- Title Banner -->
+  <text x="475" y="32" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">ASSISTments Benchmark Data Preprocessing &amp; Splitting Pipeline</text>
+  <text x="475" y="50" text-anchor="middle" font-size="11" fill="#64748b">Rigorous Data Cleaning from 525,534 Raw Rows to 324,449 Valid Interaction Events across 104 Skills</text>
+
+  <!-- STAGE 1: RAW INGESTION -->
+  <rect x="35" y="80" width="160" height="340" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" rx="8" filter="url(#shadow2)"/>
+  <rect x="35" y="80" width="160" height="30" fill="#e2e8f0" rx="8 8 0 0"/>
+  <text x="115" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">1. RAW DATASET</text>
+  
+  <rect x="45" y="125" width="140" height="75" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" rx="5"/>
+  <text x="115" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="#0f172a">ASSISTments 09-10</text>
+  <text x="115" y="161" text-anchor="middle" font-size="9" fill="#475569">Skill Builder Dataset</text>
+  <text x="115" y="177" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#dc2626">525,534 Records</text>
+  <text x="115" y="191" text-anchor="middle" font-size="8.5" fill="#64748b">Source: WPI</text>
+
+  <rect x="45" y="215" width="140" height="110" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="5"/>
+  <text x="115" y="235" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#334155">Schema Fields</text>
+  <text x="115" y="252" text-anchor="middle" font-size="8.5" fill="#64748b">• order_id, user_id</text>
+  <text x="115" y="268" text-anchor="middle" font-size="8.5" fill="#64748b">• skill_id, skill_name</text>
+  <text x="115" y="284" text-anchor="middle" font-size="8.5" fill="#64748b">• correct, attempt_count</text>
+  <text x="115" y="300" text-anchor="middle" font-size="8.5" fill="#64748b">• ms_first_response</text>
+  <text x="115" y="316" text-anchor="middle" font-size="8.5" fill="#64748b">• original (scaffolding)</text>
+
+  <!-- ARROW 1 -> 2 -->
+  <path d="M 195 240 L 235 240" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr2)"/>
+
+  <!-- STAGE 2: AUDITING & SKILL RESOLUTION -->
+  <rect x="240" y="80" width="175" height="340" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" rx="8" filter="url(#shadow2)"/>
+  <rect x="240" y="80" width="175" height="30" fill="#fef3c7" rx="8 8 0 0"/>
+  <text x="327" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">2. DATA AUDITING</text>
+
+  <rect x="250" y="125" width="155" height="65" fill="#fffbeb" stroke="#fde68a" stroke-width="1" rx="5"/>
+  <text x="327" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="#b45309">Skill Missingness</text>
+  <text x="327" y="161" text-anchor="middle" font-size="8.5" fill="#78350f">Null / NaN skill IDs: 137,705</text>
+  <text x="327" y="177" text-anchor="middle" font-size="8.5" fill="#b91c1c">Action: Drop unmapped</text>
+
+  <rect x="250" y="200" width="155" height="65" fill="#fffbeb" stroke="#fde68a" stroke-width="1" rx="5"/>
+  <text x="327" y="220" text-anchor="middle" font-size="10" font-weight="bold" fill="#b45309">Deduplication Check</text>
+  <text x="327" y="236" text-anchor="middle" font-size="8.5" fill="#78350f">Duplicate attempts &amp; replays</text>
+  <text x="327" y="252" text-anchor="middle" font-size="8.5" fill="#b91c1c">Action: Filter attempt_count=1</text>
+
+  <rect x="250" y="275" width="155" height="65" fill="#fffbeb" stroke="#fde68a" stroke-width="1" rx="5"/>
+  <text x="327" y="295" text-anchor="middle" font-size="10" font-weight="bold" fill="#b45309">Scaffolding Isolation</text>
+  <text x="327" y="311" text-anchor="middle" font-size="8.5" fill="#78350f">Sub-questions &amp; hints</text>
+  <text x="327" y="327" text-anchor="middle" font-size="8.5" fill="#b91c1c">Action: Keep original=1</text>
+
+  <!-- ARROW 2 -> 3 -->
+  <path d="M 415 240 L 455 240" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr2)"/>
+
+  <!-- STAGE 3: FILTERING & CURATION -->
+  <rect x="460" y="80" width="180" height="340" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" rx="8" filter="url(#shadow2)"/>
+  <rect x="460" y="80" width="180" height="30" fill="#e0e7ff" rx="8 8 0 0"/>
+  <text x="550" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#3730a3">3. QUALITY FILTERING</text>
+
+  <rect x="472" y="125" width="156" height="75" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1" rx="5"/>
+  <text x="550" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="#3730a3">Sequence Length Threshold</text>
+  <text x="550" y="161" text-anchor="middle" font-size="8.5" fill="#4338ca">Discard students with &lt; 3</text>
+  <text x="550" y="175" text-anchor="middle" font-size="8.5" fill="#4338ca">trials in target skill</text>
+  <text x="550" y="191" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#1e1b4b">Ensures temporal depth</text>
+
+  <rect x="472" y="210" width="156" height="85" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1" rx="5"/>
+  <text x="550" y="230" text-anchor="middle" font-size="10" font-weight="bold" fill="#3730a3">Skill Volume Threshold</text>
+  <text x="550" y="246" text-anchor="middle" font-size="8.5" fill="#4338ca">Retain 104 verified skills</text>
+  <text x="550" y="260" text-anchor="middle" font-size="8.5" fill="#4338ca">with &gt;= 30 total student trials</text>
+  <text x="550" y="278" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#1e1b4b">Guarantees EM stability</text>
+
+  <rect x="472" y="305" width="156" height="95" fill="#f0fdf4" stroke="#86efac" stroke-width="1" rx="5"/>
+  <text x="550" y="325" text-anchor="middle" font-size="10" font-weight="bold" fill="#166534">Cleaned Output</text>
+  <text x="550" y="343" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">324,449 Rows</text>
+  <text x="550" y="361" text-anchor="middle" font-size="9" fill="#166534">3,676 Students • 104 Skills</text>
+  <text x="550" y="377" text-anchor="middle" font-size="8.5" fill="#15803d">Correctness Rate: 65.88%</text>
+
+  <!-- ARROW 3 -> 4 -->
+  <path d="M 640 240 L 680 240" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr2)"/>
+
+  <!-- STAGE 4: STUDENT-BASED SPLITTING -->
+  <rect x="685" y="80" width="230" height="340" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" rx="8" filter="url(#shadow2)"/>
+  <rect x="685" y="80" width="230" height="30" fill="#ccfbf1" rx="8 8 0 0"/>
+  <text x="800" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f766e">4. EVALUATION SPLITTING</text>
+
+  <rect x="698" y="125" width="204" height="60" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1" rx="5"/>
+  <text x="800" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="#0f766e">Grouped by student_id</text>
+  <text x="800" y="161" text-anchor="middle" font-size="8.5" fill="#115e59">CRITICAL: Zero Student Leakage</text>
+  <text x="800" y="175" text-anchor="middle" font-size="8.5" fill="#0f766e">All trials of student stay together</text>
+
+  <!-- Splits breakdown -->
+  <rect x="698" y="195" width="204" height="60" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="5"/>
+  <text x="750" y="215" font-size="9.5" font-weight="bold" fill="#0f172a">TRAIN SET (80%)</text>
+  <text x="750" y="231" font-size="8.5" fill="#475569">2,940 Students • ~259,559 trials</text>
+  <text x="750" y="245" font-size="8.5" fill="#2563eb">Used for EM parameter learning</text>
+
+  <rect x="698" y="265" width="204" height="60" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="5"/>
+  <text x="750" y="285" font-size="9.5" font-weight="bold" fill="#0f172a">VALIDATION (10%)</text>
+  <text x="750" y="301" font-size="8.5" fill="#475569">368 Students • ~32,445 trials</text>
+  <text x="750" y="315" font-size="8.5" fill="#7c3aed">Used for convergence monitoring</text>
+
+  <rect x="698" y="335" width="204" height="60" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="5"/>
+  <text x="750" y="355" font-size="9.5" font-weight="bold" fill="#0f172a">TEST SET (10%)</text>
+  <text x="750" y="371" font-size="8.5" fill="#475569">368 Students • ~32,445 trials</text>
+  <text x="750" y="385" font-size="8.5" fill="#16a34a">Unseen test for AUC &amp; ECE metrics</text>
+
+  <text x="475" y="455" text-anchor="middle" font-size="10" font-weight="bold" fill="#0f172a">Generated Artifacts: assistments_cleaned.csv | train.csv | val.csv | test.csv | protocol_a_results.json</text>
+</svg>

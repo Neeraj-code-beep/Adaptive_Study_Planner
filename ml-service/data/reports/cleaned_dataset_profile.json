@@ -1,0 +1,44 @@
+{
+  "total_cleaned_interactions": 324449,
+  "unique_students": 3676,
+  "unique_questions": 16821,
+  "unique_skills": 104,
+  "correctness_distribution": {
+    "0": 110701,
+    "1": 213748
+  },
+  "correct_percentage": 65.88,
+  "sequence_statistics": {
+    "total_students": 3676,
+    "total_interactions": 324449,
+    "min_sequence_length": 5,
+    "max_sequence_length": 1261,
+    "avg_sequence_length": 88.26,
+    "median_sequence_length": 28,
+    "tied_order_id_events": 50945
+  },
+  "top_5_skills_by_interaction": [
+    {
+      "skill_id": "311",
+      "interaction_count": 24164
+    },
+    {
+      "skill_id": "47",
+      "interaction_count": 18704
+    },
+    {
+      "skill_id": "277",
+      "interaction_count": 12723
+    },
+    {
+      "skill_id": "280",
+      "interaction_count": 11273
+    },
+    {
+      "skill_id": "70",
+      "interaction_count": 9428
+    }
+  ],
+  "sparse_students_under_5_attempts": 0,
+  "rare_skills_under_30_attempts": 0
+}

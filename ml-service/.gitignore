@@ -1,0 +1,41 @@
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.env
+.env.local
+.env.*.local
+venv/
+.venv/
+env/
+ENV/
+
+# Preserve example config
+!.env.example
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Datasets (strictly excluded from git tracking)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/splits/*
+!data/splits/.gitkeep
+
+# Model Checkpoints & Serialized Artifacts (strictly excluded from git tracking)
+models/checkpoints/*
+!models/checkpoints/.gitkeep
+models/artifacts/*
+!models/artifacts/.gitkeep
+data/reports/bkt/*
+!data/reports/bkt/.gitkeep
+
+# Testing & Coverage
+.pytest_cache/
+htmlcov/
+.coverage

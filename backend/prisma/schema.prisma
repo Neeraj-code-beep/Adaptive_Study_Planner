@@ -1,0 +1,321 @@
+// Prisma Schema for Adaptive Study Planner
+// Project Owner: Neeraj Mishra (3rd Year B.Tech CSE)
+// Domain: Knowledge-Tracing-Based Adaptive Topic Recommendation for Personalized Study Planning
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum UserRole {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum DifficultyLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  MULTIPLE_SELECT
+  NUMERICAL
+  CODE_TRACE
+  TRUE_FALSE
+}
+
+enum RecommendationReason {
+  LOW_MASTERY
+  PREREQUISITE_DEFICIT
+  SPACED_REVISION_DUE
+  WEAK_RECENT_ACCURACY
+  FOUNDATIONAL_NEXT
+}
+
+enum RecommendationType {
+  PRACTICE_QUESTIONS
+  CONCEPT_REVIEW
+  REMEDIAL_PREREQUISITE
+  CHALLENGE_ADVANCED
+}
+
+enum RecommendationStatus {
+  PENDING
+  ACCEPTED
+  IN_PROGRESS
+  COMPLETED
+  DISMISSED
+}
+
+// ============================================================================
+// 1. USER & IDENTITY
+// ============================================================================
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String? // Nullable placeholder for future Phase authentication
+  role         UserRole @default(STUDENT)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // 1-to-1 relation with StudentProfile (decoupling auth from academic telemetry)
+  profile StudentProfile?
+
+  // 1-to-many application telemetry & learning state relations
+  interactions     StudentInteraction[]
+  topicMasteries   StudentTopicMastery[]
+  masteryHistories MasteryHistory[]
+  recommendations  StudyRecommendation[]
+
+  @@map("users")
+}
+
+model StudentProfile {
+  id                    String   @id @default(uuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  academicLevel         String? // e.g. "3rd Year B.Tech CSE"
+  targetExam            String? // e.g. "Campus Placements / GATE CSE"
+  preferredDailyMinutes Int      @default(45)
+  timezone              String   @default("Asia/Kolkata")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("student_profiles")
+}
+
+// ============================================================================
+// 2. CURRICULUM, TOPICS & PREREQUISITE GRAPH (DAG)
+// ============================================================================
+
+model Subject {
+  id          String   @id @default(uuid())
+  code        String   @unique // e.g. "dsa"
+  name        String // e.g. "Data Structures and Algorithms"
+  description String?  @db.Text
+  metadata    Json? // Optional JSON metadata for curriculum categorization
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  topics Topic[]
+
+  @@map("subjects")
+}
+
+model Topic {
+  id                       String          @id @default(uuid())
+  slug                     String          @unique // e.g. "dsa_arrays", "dsa_pointers"
+  subjectId                String
+  subject                  Subject         @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  name                     String
+  description              String?         @db.Text
+  learningObjectives       String?         @db.Text
+  difficulty               DifficultyLevel @default(BEGINNER)
+  displayOrder             Int             @default(0)
+  estimatedDurationMinutes Int?            @default(60)
+  isActive                 Boolean         @default(true)
+  createdAt                DateTime        @default(now())
+  updatedAt                DateTime        @updatedAt
+
+  // Self-referencing prerequisite relations forming the Directed Acyclic Graph (DAG)
+  // 1. Where this topic is the target (requires other topics as prerequisites)
+  prerequisitesAsTarget TopicPrerequisite[] @relation("PrerequisitesTarget")
+  // 2. Where this topic is the source (acts as prerequisite for other topics)
+  prerequisitesAsSource TopicPrerequisite[] @relation("PrerequisitesSource")
+
+  // Academic Content & Student Knowledge Relations
+  questions        Question[]
+  interactions     StudentInteraction[]
+  topicMasteries   StudentTopicMastery[]
+  masteryHistories MasteryHistory[]
+  recommendations  StudyRecommendation[]
+
+  @@index([subjectId])
+  @@index([displayOrder])
+  @@map("topics")
+}
+
+model TopicPrerequisite {
+  id                  String   @id @default(uuid())
+  topicId             String // Dependent/target topic
+  prerequisiteTopicId String // Required prerequisite topic
+  relationType        String?  @default("STRICT_PREREQUISITE") // or "RECOMMENDED"
+  minMasteryThreshold Float    @default(0.75) // Minimum BKT mastery required (0.0 to 1.0)
+  createdAt           DateTime @default(now())
+
+  // Relations
+  topic             Topic @relation("PrerequisitesTarget", fields: [topicId], references: [id], onDelete: Cascade)
+  prerequisiteTopic Topic @relation("PrerequisitesSource", fields: [prerequisiteTopicId], references: [id], onDelete: Cascade)
+
+  // Uniqueness: prevents duplicate directed edges between any two topics
+  @@unique([topicId, prerequisiteTopicId])
+  @@index([topicId])
+  @@index([prerequisiteTopicId])
+  @@map("topic_prerequisites")
+}
+
+// ============================================================================
+// 3. QUESTIONS & OPTIONS
+// ============================================================================
+
+model Question {
+  id           String          @id @default(uuid())
+  topicId      String
+  topic        Topic           @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  title        String?
+  questionText String          @db.Text
+  questionType QuestionType    @default(MULTIPLE_CHOICE)
+  difficulty   DifficultyLevel @default(BEGINNER)
+  marks        Float           @default(1.0)
+  explanation  String?         @db.Text
+  isActive     Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  options      QuestionOption[]
+  interactions StudentInteraction[]
+
+  @@index([topicId])
+  @@index([difficulty])
+  @@map("questions")
+}
+
+model QuestionOption {
+  id           String   @id @default(uuid())
+  questionId   String
+  question     Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  optionText   String   @db.Text
+  optionKey    String? // e.g. "A", "B", "C", "D"
+  displayOrder Int      @default(0)
+  isCorrect    Boolean  @default(false) // Isolated from student-facing payloads before submission
+  explanation  String?  @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([questionId])
+  @@map("question_options")
+}
+
+// ============================================================================
+// 4. STUDENT INTERACTIONS (PRIMARY BEHAVIORAL LOG)
+// ============================================================================
+
+model StudentInteraction {
+  id               String   @id @default(uuid())
+  studentId        String
+  student          User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  topicId          String
+  topic            Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  questionId       String
+  question         Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedOptionId String? // Option ID chosen by student for multiple choice items
+  submittedAnswer  String?  @db.Text // Text representation for numerical/code responses
+  isCorrect        Boolean // Binary outcome y_t: 1 for correct first attempt, 0 for error/hints
+  attemptNumber    Int      @default(1)
+  responseTimeMs   Int? // Response time in milliseconds
+  hintCount        Int      @default(0)
+  isScaffolding    Boolean  @default(false)
+  metadata         Json? // Telemetry (client device, UI focus events, etc.)
+  createdAt        DateTime @default(now())
+
+  // Relation to subsequent mastery snapshots triggered by this interaction
+  masteryHistories MasteryHistory[]
+
+  // High-performance composite indexes for sequential chronological lookups
+  @@index([studentId, topicId, createdAt])
+  @@index([questionId])
+  @@index([createdAt])
+  @@map("student_interactions")
+}
+
+// ============================================================================
+// 5. BKT KNOWLEDGE TRACING & MASTERY PERSISTENCE
+// ============================================================================
+
+model StudentTopicMastery {
+  id        String @id @default(uuid())
+  studentId String
+  student   User   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  topicId   String
+  topic     Topic  @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  // Core BKT Knowledge Tracing states
+  masteryProbability         Float     @default(0.1) // Latent cognitive belief P(L_t) in [0.0, 1.0]
+  predictedCorrectness       Float? // Observable emission forecast P(C_t = 1)
+  modelVersion               String    @default("bkt_v1")
+  totalInteractions          Int       @default(0)
+  lastProcessedInteractionId String?
+  lastProcessedAt            DateTime?
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
+
+  // Strict invariant: exactly one current mastery record per student-topic pair
+  @@unique([studentId, topicId])
+  @@index([studentId])
+  @@index([topicId])
+  @@map("student_topic_masteries")
+}
+
+model MasteryHistory {
+  id            String              @id @default(uuid())
+  studentId     String
+  student       User                @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  topicId       String
+  topic         Topic               @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  interactionId String?
+  interaction   StudentInteraction? @relation(fields: [interactionId], references: [id], onDelete: SetNull)
+
+  // Chronological transition audit
+  masteryBefore        Float // P(L_t) before observing outcome
+  predictedCorrectness Float // P(C_t=1) predicted prior to observation
+  masteryAfter         Float // P(L_{t+1}) after Bayes update and learning transition
+  isCorrect            Boolean? // Actual outcome observed
+  modelVersion         String   @default("bkt_v1")
+  createdAt            DateTime @default(now())
+
+  @@index([studentId, topicId, createdAt])
+  @@index([interactionId])
+  @@map("mastery_histories")
+}
+
+// ============================================================================
+// 6. ADAPTIVE STUDY RECOMMENDATIONS
+// ============================================================================
+
+model StudyRecommendation {
+  id        String @id @default(uuid())
+  studentId String
+  student   User   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  topicId   String
+  topic     Topic  @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  reason             RecommendationReason @default(LOW_MASTERY)
+  recommendationType RecommendationType   @default(PRACTICE_QUESTIONS)
+  priority           Int                  @default(1) // 1 (Normal) to 5 (Urgent/Prerequisite Blocker)
+  status             RecommendationStatus @default(PENDING)
+  explanation        String?              @db.Text // Human-readable explanation of why this was recommended
+  currentMastery     Float? // Snapshot of topic mastery when recommendation was generated
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  completedAt DateTime?
+
+  @@index([studentId, status])
+  @@index([topicId])
+  @@index([createdAt])
+  @@map("study_recommendations")
+}

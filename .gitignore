@@ -1,0 +1,83 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+dist/
+build/
+out/
+
+# Python Virtual Environments & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+
+# Preserve example environment files
+!.env.example
+
+# Large ML Datasets & Weights (strictly excluded from git)
+ml-service/data/raw/*
+!ml-service/data/raw/.gitkeep
+ml-service/data/processed/*
+!ml-service/data/processed/.gitkeep
+ml-service/data/splits/*
+!ml-service/data/splits/.gitkeep
+ml-service/models/checkpoints/*
+!ml-service/models/checkpoints/.gitkeep
+ml-service/models/artifacts/*
+!ml-service/models/artifacts/.gitkeep
+ml-service/data/reports/bkt/*
+!ml-service/data/reports/bkt/.gitkeep
+
+# Testing & Coverage
+coverage/
+*.lcov
+.nyc_output/
+.pytest_cache/
+
+# IDE and OS temporary files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

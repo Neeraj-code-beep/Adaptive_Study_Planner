@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 440" width="920" height="440" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <filter id="shadow4" x="-5%" y="-5%" width="110%" height="110%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.1"/>
+    </filter>
+    <marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155"/>
+    </marker>
+    <marker id="arr4-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr4-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="920" height="440" fill="#f8fafc" rx="8"/>
+  <rect x="1" y="1" width="918" height="438" fill="none" stroke="#e2e8f0" stroke-width="1.5" rx="8"/>
+
+  <!-- Title Banner -->
+  <text x="460" y="32" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Bayesian Knowledge Tracing as a Two-State Hidden Markov Model</text>
+  <text x="460" y="50" text-anchor="middle" font-size="11" fill="#64748b">Latent Mastery States L in {0, 1}, Observable Emissions C in {0, 1}, and Model Parameters (L_0, T, G, S)</text>
+
+  <!-- LATENT STATE REGION BANNER -->
+  <rect x="60" y="80" width="800" height="150" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4" rx="8"/>
+  <text x="80" y="102" font-size="11" font-weight="bold" fill="#475569">LATENT (HIDDEN) COGNITIVE STATES</text>
+
+  <!-- INITIAL PROBABILITY ARROWS -->
+  <path d="M 80 160 L 175 160" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr4)"/>
+  <text x="125" y="152" text-anchor="middle" font-size="9" font-weight="bold" fill="#0f172a">1 - P(L_0)</text>
+
+  <!-- STATE 0: UNMASTERED -->
+  <circle cx="230" cy="160" r="48" fill="#fef2f2" stroke="#dc2626" stroke-width="2.5" filter="url(#shadow4)"/>
+  <text x="230" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="#991b1b">Unmastered</text>
+  <text x="230" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="#dc2626">L = 0</text>
+
+  <!-- SELF LOOP ON UNMASTERED (1 - T) -->
+  <path d="M 215 115 C 200 70, 260 70, 245 115" fill="none" stroke="#991b1b" stroke-width="1.8" marker-end="url(#arr4-red)"/>
+  <text x="230" y="65" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#991b1b">1 - T (Remain)</text>
+
+  <!-- TRANSITION ARROW: UNMASTERED -> MASTERED (T) -->
+  <path d="M 280 150 L 610 150" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arr4-blue)"/>
+  <rect x="400" y="132" width="100" height="22" fill="#ffffff" stroke="#2563eb" stroke-width="1" rx="4"/>
+  <text x="450" y="147" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Learning Rate (T)</text>
+
+  <!-- STATE 1: MASTERED -->
+  <circle cx="660" cy="160" r="48" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5" filter="url(#shadow4)"/>
+  <text x="660" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="#166534">Mastered</text>
+  <text x="660" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="#16a34a">L = 1</text>
+
+  <!-- SELF LOOP ON MASTERED (No Forgetting: 1.0) -->
+  <path d="M 645 115 C 630 70, 690 70, 675 115" fill="none" stroke="#166534" stroke-width="1.8" marker-end="url(#arr4)"/>
+  <text x="660" y="65" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#166534">1.0 (No Forgetting)</text>
+
+  <!-- INITIAL PROBABILITY ARROW TO MASTERED -->
+  <path d="M 540 90 C 580 90, 600 115, 620 130" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arr4)"/>
+  <text x="560" y="108" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#16a34a">Prior P(L_0)</text>
+
+  <!-- OBSERVABLE EMISSION REGION BANNER -->
+  <rect x="60" y="270" width="800" height="145" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4" rx="8"/>
+  <text x="80" y="292" font-size="11" font-weight="bold" fill="#475569">OBSERVABLE RESPONSE EMISSIONS</text>
+
+  <!-- EMISSIONS FROM UNMASTERED (L=0) -->
+  <path d="M 200 205 L 140 320" fill="none" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#arr4-red)"/>
+  <text x="145" y="255" text-anchor="middle" font-size="9" font-weight="bold" fill="#b91c1c">1 - G</text>
+
+  <path d="M 255 205 L 305 320" fill="none" stroke="#2563eb" stroke-width="1.8" marker-end="url(#arr4-blue)"/>
+  <text x="295" y="255" text-anchor="middle" font-size="9" font-weight="bold" fill="#2563eb">Guess (G)</text>
+
+  <rect x="80" y="325" width="110" height="60" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.2" rx="6" filter="url(#shadow4)"/>
+  <text x="135" y="350" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#991b1b">Incorrect</text>
+  <text x="135" y="368" text-anchor="middle" font-size="11" font-weight="bold" fill="#dc2626">C = 0</text>
+
+  <rect x="250" y="325" width="110" height="60" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" rx="6" filter="url(#shadow4)"/>
+  <text x="305" y="350" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#166534">Correct</text>
+  <text x="305" y="368" text-anchor="middle" font-size="11" font-weight="bold" fill="#16a34a">C = 1</text>
+  <text x="305" y="380" text-anchor="middle" font-size="8" fill="#15803d">(Lucky Guess)</text>
+
+  <!-- EMISSIONS FROM MASTERED (L=1) -->
+  <path d="M 635 205 L 585 320" fill="none" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#arr4-red)"/>
+  <text x="595" y="255" text-anchor="middle" font-size="9" font-weight="bold" fill="#b91c1c">Slip (S)</text>
+
+  <path d="M 685 205 L 745 320" fill="none" stroke="#16a34a" stroke-width="1.8" marker-end="url(#arr4)"/>
+  <text x="735" y="255" text-anchor="middle" font-size="9" font-weight="bold" fill="#166534">1 - S</text>
+
+  <rect x="530" y="325" width="110" height="60" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.2" rx="6" filter="url(#shadow4)"/>
+  <text x="585" y="350" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#991b1b">Incorrect</text>
+  <text x="585" y="368" text-anchor="middle" font-size="11" font-weight="bold" fill="#dc2626">C = 0</text>
+  <text x="585" y="380" text-anchor="middle" font-size="8" fill="#991b1b">(Careless Slip)</text>
+
+  <rect x="700" y="325" width="110" height="60" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" rx="6" filter="url(#shadow4)"/>
+  <text x="755" y="350" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#166534">Correct</text>
+  <text x="755" y="368" text-anchor="middle" font-size="11" font-weight="bold" fill="#16a34a">C = 1</text>
+</svg>
